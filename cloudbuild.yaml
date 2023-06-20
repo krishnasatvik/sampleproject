@@ -15,4 +15,4 @@
     args: ['app', 'deploy', '--version', 'my-service', '--quiet']
 
 substitutions:
-  _BUCKET_NAME: 'testbucket-1'
+  _BUCKET_NAME: 'krishbucket88'
