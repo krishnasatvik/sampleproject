@@ -1,4 +1,4 @@
- steps:
+steps:
   - name: 'gcr.io/cloud-builders/git'
     entrypoint: 'bash'
     args:
@@ -6,7 +6,7 @@
       - |
         git clone https://github.com/krishnasatvik/sampleproject.git temp-dir || (cd temp-dir && git pull origin)
         mv temp-dir/* .
-        rm -rf temp-dir  
+        rm -rf temp-dir
 
   - name: 'gcr.io/cloud-builders/gsutil'
     args: ['cp', 'index.html', 'gs://$_BUCKET_NAME']
@@ -15,4 +15,4 @@
     args: ['app', 'deploy', '--version', 'my-service', '--quiet']
 
 substitutions:
-  _BUCKET_NAME: 'krishbucket88'
+  _BUCKET_NAME: 'git-buck-1'
