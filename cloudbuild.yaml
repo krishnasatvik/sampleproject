@@ -1,15 +1,15 @@
-steps:
-  - name: 'gcr.io/cloud-builders/git'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        git clone https://github.com/krishnasatvik/sampleproject.git temp-dir || (cd temp-dir && git pull origin)
-        mv temp-dir/* .
-        rm -rf temp-dir
-
-  - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['cp', 'index.html', 'gs://krishbucket88']
-
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['app', 'deploy', '--version', 'my-service', '--quiet']
+---
+pipeline:
+  stages:
+    - name: Deploy to GCP
+      container:
+        image: google/cloud-sdk:latest
+        entrypoint:
+          - "sh"
+          - "-c"
+        commands:
+          - "gcloud auth activate-service-account --key-file=${{ secrets.GCP_CREDENTIALS }}"
+          - "gcloud config set project $(project_id)"
+          - "cd terraform"
+          - "terraform init"
+          - "terraform apply -auto-approve"
