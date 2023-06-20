@@ -4,8 +4,11 @@ steps:
     args:
       - '-c'
       - |
-        gcloud auth activate-service-account --key-file=${{ secrets.GCP_CREDENTIALS }}
-        gcloud config set project $(project_id)
+        gcloud auth activate-service-account --key-file=${_GCP_CREDENTIALS}
+        gcloud config set project ${_GCP_PROJECT_ID}
         cd terraform
         terraform init
         terraform apply -auto-approve
+env:
+  _GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+  _GCP_PROJECT_ID: ${{ secrets.PROJECT_ID }}
