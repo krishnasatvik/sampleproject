@@ -1,15 +1,11 @@
----
-pipeline:
-  stages:
-    - name: Deploy to GCP
-      container:
-        image: google/cloud-sdk:latest
-        entrypoint:
-          - "sh"
-          - "-c"
-        commands:
-          - "gcloud auth activate-service-account --key-file=${{ secrets.GCP_CREDENTIALS }}"
-          - "gcloud config set project $(project_id)"
-          - "cd terraform"
-          - "terraform init"
-          - "terraform apply -auto-approve"
+steps:
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud auth activate-service-account --key-file=${{ secrets.GCP_CREDENTIALS }}
+        gcloud config set project $(project_id)
+        cd terraform
+        terraform init
+        terraform apply -auto-approve
