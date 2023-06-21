@@ -4,9 +4,17 @@ steps:
     args:
       - '-c'
       - |
-        gcloud auth activate-service-account --key-file=var.credentials_file
-        gcloud config set project var.project_id
+        gcloud auth activate-service-account --key-file=$$CREDENTIALS_FILE_PATH
+        gcloud config set project $$PROJECT_ID
         cd terraform
         gcloud components install terraform
         terraform init
         terraform apply -auto-approve
+
+substitutions:
+  _CREDENTIALS_FILE_PATH: krishtest-390320-55a2c26ed699.json
+  _PROJECT_ID: krishtest-390320
+
+
+
+        
