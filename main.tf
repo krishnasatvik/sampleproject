@@ -1,7 +1,7 @@
 # main.tf
 
 provider "google" {
-  credentials = file("/path/to/gcp_credentials.json")
+  credentials = file("krishtest-390320-55a2c26ed699.json")
   project     = "krishtest-390320"
   region      = "us-central1"
 }
