@@ -1,8 +1,6 @@
-# main.tf
-
 provider "google" {
-  credentials = file("krishtest-390320-55a2c26ed699.json")
-  project     = "krishtest-390320"
+  credentials = file("var.credentials_file")
+  project     = "var.project_id"
   region      = "us-central1"
 }
 
