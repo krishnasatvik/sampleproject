@@ -29,27 +29,35 @@ jobs:
         with:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
           
-      - name: Configure Docker
+      - name: Deploy with Terraform
         run: |
-          echo ${{ secrets.GCP_CREDENTIALS }} | base64 --decode > ${HOME}/gcloud.json
-          gcloud auth activate-service-account --key-file=${HOME}/gcloud.json
-          gcloud auth configure-docker
+          gcloud auth activate-service-account --key-file=${{ secrets.GCP_CREDENTIALS }}
+          gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
+          cd terraform
+          terraform init
+          terraform apply -auto-approve
+          
+      #- name: Configure Docker
+       # run: |
+       #   echo ${{ secrets.GCP_CREDENTIALS }} | base64 --decode > ${HOME}/gcloud.json
+       #   gcloud auth activate-service-account --key-file=${HOME}/gcloud.json
+       #   gcloud auth configure-docker
 
-      - name: Build and push Docker image
-        run: |
-          docker build -t gcr.io/${{ secrets.GCP_BUILD_STAGING_TRIGGER_ID }}/sample-html-page:${{ github.sha }} .
-          docker push gcr.io/${{ secrets.GCP_BUILD_STAGING_TRIGGER_ID }}/sample-html-page:${{ github.sha }}
+     # - name: Build and push Docker image
+     #   run: |
+      #    docker build -t gcr.io/${{ secrets.GCP_BUILD_STAGING_TRIGGER_ID }}/sample-html-page:${{ github.sha }} .
+       #   docker push gcr.io/${{ secrets.GCP_BUILD_STAGING_TRIGGER_ID }}/sample-html-page:${{ github.sha }}
      
 
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
+      #- name: 'Use gcloud CLI'
+       # run: 'gcloud info'
         
-      - name: Deploy to Cloud Run
-        run: |
-          gcloud beta builds triggers run deploy sample-html-page \
-            --image=gcr.io/${{ secrets.GCP_BUILD_STAGING_TRIGGER_ID }}/sample-html-page:${{ github.sha }} \
-            --region=us-central1 \
-            --platform=managed
+      # - name: Deploy to Cloud Run
+       # run: |
+        #  gcloud beta builds triggers run deploy sample-html-page \
+         #   --image=gcr.io/${{ secrets.GCP_BUILD_STAGING_TRIGGER_ID }}/sample-html-page:${{ github.sha }} \
+          #  --region=us-central1 \
+          #  --platform=managed
 
       #- name: 'Start Google Cloud Build trigger'
        # run: |
