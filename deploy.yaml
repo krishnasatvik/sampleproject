@@ -8,7 +8,7 @@ pipeline:
           - "sh"
           - "-c"
         commands:
-          - "gcloud auth activate-service-account --key-file=C:\Users\satvi\Downloads\krishtest-390320-55a2c26ed699.json"
+          - "gcloud auth activate-service-account --key-file=krishtest-390320-55a2c26ed699.json"
           - "gcloud config set project $(project_id)"
           - "cd terraform"
           - "terraform init"
